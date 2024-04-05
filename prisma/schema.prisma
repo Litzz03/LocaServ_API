@@ -31,8 +31,8 @@ model VotacaoEnquete {
   dataVotacao   DateTime @default(now())
   sessionId     String
 
-  enquete                   Enquete      @relation(fields: [enqueteCodigo], references: [codigo])
-  opcaoEnquete              OpcaoEnquete @relation(fields: [opcaoEnqueteCodigoEnquete], references: [codigoEnquete])
+  enquete      Enquete      @relation(fields: [enqueteCodigo], references: [codigo])
+  opcaoEnquete OpcaoEnquete @relation(fields: [opcaoEnqueteCodigoEnquete], references: [codigoEnquete])
 
   enqueteCodigo             String
   opcaoEnqueteCodigoEnquete String
