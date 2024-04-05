@@ -1,0 +1,39 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Enquete {
+  codigo         String           @id @default(uuid())
+  titulo         String
+  descricao      String
+  dataCriacao    DateTime         @default(now())
+  dataAlteracao  DateTime         @default(now())
+  opcoesEnquete  OpcaoEnquete[]
+  votacaoEnquete VotacaoEnquete[]
+}
+
+model OpcaoEnquete {
+  codigoEnquete String @id @default(uuid())
+  descricao     String
+  enqueteCodigo String
+
+  enquete        Enquete          @relation(fields: [enqueteCodigo], references: [codigo])
+  votacaoEnquete VotacaoEnquete[]
+}
+
+model VotacaoEnquete {
+  codigoVotacao Int      @id @default(autoincrement())
+  dataVotacao   DateTime @default(now())
+  sessionId     String
+
+  enquete                   Enquete      @relation(fields: [enqueteCodigo], references: [codigo])
+  opcaoEnquete              OpcaoEnquete @relation(fields: [opcaoEnqueteCodigoEnquete], references: [codigoEnquete])
+
+  enqueteCodigo             String
+  opcaoEnqueteCodigoEnquete String
+}
