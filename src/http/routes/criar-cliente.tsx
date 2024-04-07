@@ -7,7 +7,7 @@ import { prisma } from "../../lib/prisma";
 
 export async function criarUsuario(app: FastifyInstance){
     app.post('/criarUsuario', async (request: FastifyRequest, reply: FastifyReply) => {
-        try {
+       
             const requestBody = z.object({
                 nome: z.string(),
                 email: z.string().email()
@@ -23,10 +23,7 @@ export async function criarUsuario(app: FastifyInstance){
             });
     
             return reply.status(201).send(usuarioCriado);
-        } catch (error) {
-            console.error("Erro ao criar usuário:", error);
-            return reply.status(500).send({ error: "Erro ao criar usuário" });
-        }
+        
     });
 
 
