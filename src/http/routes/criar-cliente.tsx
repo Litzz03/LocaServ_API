@@ -2,9 +2,6 @@ import { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
 import z from "zod";
 import { prisma } from "../../lib/prisma";
 
-
-
-
 export async function criarUsuario(app: FastifyInstance){
     app.post('/criarUsuario', async (request: FastifyRequest, reply: FastifyReply) => {
        
@@ -27,4 +24,4 @@ export async function criarUsuario(app: FastifyInstance){
     });
 
 
-} 
+}
