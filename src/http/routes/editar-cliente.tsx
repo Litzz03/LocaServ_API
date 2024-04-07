@@ -5,16 +5,16 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export async function editarUsuario(app: FastifyInstance) {
-    app.put('/editarUsuario/:id', async (request: FastifyRequest, reply: FastifyReply) => {
+    app.put('/editarUsuario/:id', async (requisicao: FastifyRequest, resposta: FastifyReply) => {
         try {
-            const { id } = request.params as { id: string };
+            const { id } = requisicao.params as { id: string };
 
-            const requestBody = z.object({
+            const esquemaDados = z.object({
                 nome: z.string(),
                 email: z.string().email()
             });
 
-            const { nome, email } = requestBody.parse(request.body);
+            const { nome, email } = esquemaDados.parse(requisicao.body);
 
             const usuarioAtualizado = await prisma.usuario.update({
                 where: { id: parseInt(id) },
@@ -24,9 +24,9 @@ export async function editarUsuario(app: FastifyInstance) {
                 }
             });
 
-            return reply.status(200).send(usuarioAtualizado);
+            return resposta.status(200).send(usuarioAtualizado);
         } catch (error) {
-            reply.status(500).send({ error: 'Erro Interno do Servidor' });
+            resposta.status(500).send({ erro: 'Erro Interno do Servidor' });
         }
     });
 }
