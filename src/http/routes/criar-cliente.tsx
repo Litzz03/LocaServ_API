@@ -6,16 +6,18 @@ export async function criarUsuario(app: FastifyInstance){
     app.post('/criarUsuario', async (request: FastifyRequest, reply: FastifyReply) => {
        
             const requestBody = z.object({
-                nome: z.string(),
-                email: z.string().email()
+                EMAIL_USUARIO: z.string(),
+                SENHA_USUARIO: z.string()
+
             });
     
-            const { nome, email } = requestBody.parse(request.body);
+            const { EMAIL_USUARIO,SENHA_USUARIO } = requestBody.parse(request.body);
         
             const usuarioCriado = await prisma.usuario.create({
                 data: {
-                    nome,
-                    email
+                
+                    EMAIL_USUARIO,
+                    SENHA_USUARIO
                 }
             });
     
