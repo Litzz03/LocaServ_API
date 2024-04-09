@@ -7,4 +7,86 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model USUARIO_SISTEMA {
+  ID_USUARIO    String @id @default(uuid())
+  LOGIN_USUARIO String
+  SENHA_USUARIO String
+  EMAIL_USUARIO String
 
+  VENDEDOR VENDEDOR[]
+  CLIENTE  CLIENTE[]
+}
+
+model EMPRESA {
+  ID_EMPRESA        String @id @default(uuid())
+  DESCRICAO_EMPRESA String
+  DOCUMENTO_EMPRESA String
+
+  VENDEDOR VENDEDOR[]
+  PRODUTO  PRODUTO[]
+  VENDA    VENDA[]
+}
+
+model VENDEDOR {
+  ID_VENDEDOR        String @id @default(uuid())
+  ID_USUARIO         String
+  ID_EMPRESA         String
+  DESCRICAO_VENDEDOR String
+
+  USUARIO USUARIO_SISTEMA @relation(fields: [ID_USUARIO], references: [ID_USUARIO])
+  EMPRESA EMPRESA         @relation(fields: [ID_EMPRESA], references: [ID_EMPRESA])
+  VENDA   VENDA[]
+}
+
+model CLIENTE {
+  ID_CLIENTE        String @id @default(uuid())
+  ID_USUARIO        String
+  DESCRICAO_USUARIO String
+  DOCUMENTO_USUARIO String
+  TELEFONE_USUARIO  String
+
+  USUARIO USUARIO_SISTEMA @relation(fields: [ID_USUARIO], references: [ID_USUARIO])
+  VENDA   VENDA[]
+}
+
+model PRODUTO {
+  ID_PRODUTO        String @id @default(uuid())
+  ID_EMPRESA        String
+  DESCRICAO_PRODUTO String
+  VL_CUSTO          Float
+  VL_VENDA          Float
+
+  EMPRESA    EMPRESA      @relation(fields: [ID_EMPRESA], references: [ID_EMPRESA])
+  VENDA_ITEM VENDA_ITEM[]
+}
+
+model VENDA {
+  ID_VENDA     String   @id @default(uuid())
+  ID_CLIENTE   String
+  ID_VENDEDOR  String
+  ID_EMPRESA   String
+  VL_TOTAL     Float
+  VL_PAGO      Float
+  VL_ACRESCIMO Float
+  VL_DESCONTO  Float
+  DT_VENDA     DateTime
+
+  CLIENTE    CLIENTE      @relation(fields: [ID_CLIENTE], references: [ID_CLIENTE])
+  VENDEDOR   VENDEDOR     @relation(fields: [ID_VENDEDOR], references: [ID_VENDEDOR])
+  EMPRESA    EMPRESA      @relation(fields: [ID_EMPRESA], references: [ID_EMPRESA])
+  VENDA_ITEM VENDA_ITEM[]
+}
+
+model VENDA_ITEM {
+  ID_VENDA_ITEM String @id @default(uuid())
+  ID_VENDA      String
+  ID_PRODUTO    String
+  VL_TOTAL      Float
+  VL_CUSTO      Float
+  VL_ACRESCIMO  Float
+  VL_DESCONTO   Float
+  NR_QUANTIDADE Float
+
+  VENDA   VENDA   @relation(fields: [ID_VENDA], references: [ID_VENDA])
+  PRODUTO PRODUTO @relation(fields: [ID_PRODUTO], references: [ID_PRODUTO])
+}
