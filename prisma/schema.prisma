@@ -7,11 +7,11 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model USUARIO_SISTEMA {
-  ID_USUARIO    String @id @default(uuid())
-  LOGIN_USUARIO String
-  SENHA_USUARIO String
-  EMAIL_USUARIO String
+model usuario_sistema {
+  id_usuario    String @id @default(uuid())
+  login_usuario String
+  senha_usuario String
+  email_usuario String
 
   VENDEDOR VENDEDOR[]
   CLIENTE  CLIENTE[]
@@ -33,7 +33,7 @@ model VENDEDOR {
   ID_EMPRESA         String
   DESCRICAO_VENDEDOR String
 
-  USUARIO USUARIO_SISTEMA @relation(fields: [ID_USUARIO], references: [ID_USUARIO])
+  USUARIO usuario_sistema @relation(fields: [ID_USUARIO], references: [id_usuario])
   EMPRESA EMPRESA         @relation(fields: [ID_EMPRESA], references: [ID_EMPRESA])
   VENDA   VENDA[]
 }
@@ -45,7 +45,7 @@ model CLIENTE {
   DOCUMENTO_USUARIO String
   TELEFONE_USUARIO  String
 
-  USUARIO USUARIO_SISTEMA @relation(fields: [ID_USUARIO], references: [ID_USUARIO])
+  USUARIO usuario_sistema @relation(fields: [ID_USUARIO], references: [id_usuario])
   VENDA   VENDA[]
 }
 
