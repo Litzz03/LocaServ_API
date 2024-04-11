@@ -8,8 +8,7 @@ datasource db {
 }
 
 model usuario_sistema {
-  id_usuario    String @id @default(uuid())
-  login_usuario String
+  login_usuario String @id
   senha_usuario String
   email_usuario String
 
@@ -33,7 +32,7 @@ model VENDEDOR {
   ID_EMPRESA         String
   DESCRICAO_VENDEDOR String
 
-  USUARIO usuario_sistema @relation(fields: [ID_USUARIO], references: [id_usuario])
+  USUARIO usuario_sistema @relation(fields: [ID_USUARIO], references: [login_usuario])
   EMPRESA EMPRESA         @relation(fields: [ID_EMPRESA], references: [ID_EMPRESA])
   VENDA   VENDA[]
 }
@@ -45,7 +44,7 @@ model CLIENTE {
   DOCUMENTO_USUARIO String
   TELEFONE_USUARIO  String
 
-  USUARIO usuario_sistema @relation(fields: [ID_USUARIO], references: [id_usuario])
+  USUARIO usuario_sistema @relation(fields: [ID_USUARIO], references: [login_usuario])
   VENDA   VENDA[]
 }
 
