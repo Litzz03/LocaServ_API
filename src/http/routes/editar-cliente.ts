@@ -1,32 +1,39 @@
 import { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
-import { z } from "zod";
 import { PrismaClient } from "@prisma/client";
+import z from "zod";
 
 const prisma = new PrismaClient();
 
-export async function editarUsuario(app: FastifyInstance) {
-    app.put('/editarUsuario/:id', async (requisicao: FastifyRequest, resposta: FastifyReply) => {
+export async function editarCliente(app: FastifyInstance){
+    app.put('/editarCliente/:id', async (request: FastifyRequest, reply: FastifyReply) => {
         try {
-            const { id } = requisicao.params as { id: string };
+            const { id } = z.string().parse(request.params);
 
-            const esquemaDados = z.object({
-                EMAIL_USUARIO: z.string(),
-                SENHA_USUARIO: z.string()
-            });
-
-            const {  EMAIL_USUARIO,SENHA_USUARIO } = esquemaDados.parse(requisicao.body);
-
-            const usuarioAtualizado = await prisma.usuario.update({
-                where: { id: parseInt(id) },
+            const requestBody = z.object({
+                ID_USUARIO: z.string().optional(),
+                DESCRICAO_USUARIO: z.string().optional(),
+                DOCUMENTO_USUARIO: z.string().optional(),
+                TELEFONE_USUARIO: z.string().optional()
+            }).partial();
+    
+            const { ID_USUARIO, DESCRICAO_USUARIO, DOCUMENTO_USUARIO, TELEFONE_USUARIO } = requestBody.parse(request.body);
+        
+            const clienteAtualizado = await prisma.cliente.update({
+                where: {
+                    ID_CLIENTE: id
+                },
                 data: {
-                    EMAIL_USUARIO,
-                    SENHA_USUARIO
+                    ID_USUARIO,
+                    DESCRICAO_USUARIO,
+                    DOCUMENTO_USUARIO,
+                    TELEFONE_USUARIO
                 }
             });
-
-            return resposta.status(200).send(usuarioAtualizado);
+    
+            return reply.send(clienteAtualizado);
         } catch (error) {
-            resposta.status(500).send({ erro: 'Erro Interno do Servidor' });
+            console.error("Erro ao editar cliente:", error);
+            return reply.status(500).send({ error: "Erro ao editar cliente" });
         }
     });
 }
