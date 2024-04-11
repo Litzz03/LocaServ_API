@@ -10,17 +10,17 @@ export async function editarUsuario(app: FastifyInstance) {
             const { id } = requisicao.params as { id: string };
 
             const esquemaDados = z.object({
-                nome: z.string(),
-                email: z.string().email()
+                EMAIL_USUARIO: z.string(),
+                SENHA_USUARIO: z.string()
             });
 
-            const { nome, email } = esquemaDados.parse(requisicao.body);
+            const {  EMAIL_USUARIO,SENHA_USUARIO } = esquemaDados.parse(requisicao.body);
 
             const usuarioAtualizado = await prisma.usuario.update({
                 where: { id: parseInt(id) },
                 data: {
-                    nome,
-                    email
+                    EMAIL_USUARIO,
+                    SENHA_USUARIO
                 }
             });
 
