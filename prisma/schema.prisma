@@ -12,80 +12,80 @@ model usuario_sistema {
   senha_usuario String
   email_usuario String
 
-  VENDEDOR VENDEDOR[]
-  CLIENTE  CLIENTE[]
+  vendedor vendedor[]
+  cliente  cliente[]
 }
 
-model EMPRESA {
-  ID_EMPRESA        String @id @default(uuid())
-  DESCRICAO_EMPRESA String
-  DOCUMENTO_EMPRESA String
+model empresa {
+  id_empresa        String @id @default(uuid())
+  descricao_empresa String
+  documento_empresa String
 
-  VENDEDOR VENDEDOR[]
-  PRODUTO  PRODUTO[]
-  VENDA    VENDA[]
+  vendedor vendedor[]
+  produto  produto[]
+  venda    venda[]
 }
 
-model VENDEDOR {
-  ID_VENDEDOR        String @id @default(uuid())
-  ID_USUARIO         String
-  ID_EMPRESA         String
-  DESCRICAO_VENDEDOR String
+model vendedor {
+  id_vendedor        String @id @default(uuid())
+  id_usuario         String
+  id_empresa         String
+  descricao_vendedor String
 
-  USUARIO usuario_sistema @relation(fields: [ID_USUARIO], references: [login_usuario])
-  EMPRESA EMPRESA         @relation(fields: [ID_EMPRESA], references: [ID_EMPRESA])
-  VENDA   VENDA[]
+  usuario usuario_sistema @relation(fields: [id_usuario], references: [login_usuario])
+  empresa empresa         @relation(fields: [id_empresa], references: [id_empresa])
+  venda   venda[]
 }
 
-model CLIENTE {
-  ID_CLIENTE        String @id @default(uuid())
-  ID_USUARIO        String
-  DESCRICAO_USUARIO String
-  DOCUMENTO_USUARIO String
-  TELEFONE_USUARIO  String
+model cliente {
+  id_cliente        String @id @default(uuid())
+  id_usuario        String
+  descricao_usuario String
+  documento_usuario String
+  telefone_usuario  String
 
-  USUARIO usuario_sistema @relation(fields: [ID_USUARIO], references: [login_usuario])
-  VENDA   VENDA[]
+  usuario usuario_sistema @relation(fields: [id_usuario], references: [login_usuario])
+  venda   venda[]
 }
 
-model PRODUTO {
-  ID_PRODUTO        String @id @default(uuid())
-  ID_EMPRESA        String
-  DESCRICAO_PRODUTO String
-  VL_CUSTO          Float
-  VL_VENDA          Float
+model produto {
+  id_produto        String @id @default(uuid())
+  id_empresa        String
+  descricao_produto String
+  vl_custo          Float
+  vl_venda          Float
 
-  EMPRESA    EMPRESA      @relation(fields: [ID_EMPRESA], references: [ID_EMPRESA])
-  VENDA_ITEM VENDA_ITEM[]
+  empresa    empresa      @relation(fields: [id_empresa], references: [id_empresa])
+  venda_item venda_item[]
 }
 
-model VENDA {
-  ID_VENDA     String   @id @default(uuid())
-  ID_CLIENTE   String
-  ID_VENDEDOR  String
-  ID_EMPRESA   String
-  VL_TOTAL     Float
-  VL_PAGO      Float
-  VL_ACRESCIMO Float
-  VL_DESCONTO  Float
-  DT_VENDA     DateTime
+model venda {
+  id_venda     String   @id @default(uuid())
+  id_cliente   String
+  id_vendedor  String
+  id_empresa   String
+  vl_total     Float
+  vl_pago      Float
+  vl_acrescimo Float
+  vl_desconto  Float
+  dt_venda     DateTime
 
-  CLIENTE    CLIENTE      @relation(fields: [ID_CLIENTE], references: [ID_CLIENTE])
-  VENDEDOR   VENDEDOR     @relation(fields: [ID_VENDEDOR], references: [ID_VENDEDOR])
-  EMPRESA    EMPRESA      @relation(fields: [ID_EMPRESA], references: [ID_EMPRESA])
-  VENDA_ITEM VENDA_ITEM[]
+  cliente    cliente      @relation(fields: [id_cliente], references: [id_cliente])
+  vendedor   vendedor     @relation(fields: [id_vendedor], references: [id_vendedor])
+  empresa    empresa      @relation(fields: [id_empresa], references: [id_empresa])
+  venda_item venda_item[]
 }
 
-model VENDA_ITEM {
-  ID_VENDA_ITEM String @id @default(uuid())
-  ID_VENDA      String
-  ID_PRODUTO    String
-  VL_TOTAL      Float
-  VL_CUSTO      Float
-  VL_ACRESCIMO  Float
-  VL_DESCONTO   Float
-  NR_QUANTIDADE Float
+model venda_item {
+  id_venda_item String @id @default(uuid())
+  id_venda      String
+  id_produto    String
+  vl_total      Float
+  vl_custo      Float
+  vl_acrescimo  Float
+  vl_desconto   Float
+  nr_quantidade Float
 
-  VENDA   VENDA   @relation(fields: [ID_VENDA], references: [ID_VENDA])
-  PRODUTO PRODUTO @relation(fields: [ID_PRODUTO], references: [ID_PRODUTO])
+  venda   venda   @relation(fields: [id_venda], references: [id_venda])
+  produto produto @relation(fields: [id_produto], references: [id_produto])
 }
